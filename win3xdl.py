@@ -40,7 +40,7 @@ def dl():
         os.mkdir('dl')
 
     # Charger les URLs existantes depuis le fichier urls_existantes.txt
-    with open('urls_existantes.txt', 'r') as f:
+    with open('url.txt', 'r') as f:
         urls = f.read().splitlines()
 
     # Télécharger les fichiers à partir des URLs existantes avec une barre de progression
