@@ -48,3 +48,5 @@ def telecharger_urls_existantes():
             tqdm.write(f"{filename} a été téléchargé avec succès dans le dossier dl.")
 
     tqdm.write(f"Tous les fichiers ont été téléchargés avec succès dans le dossier dl.")
+tester_urls_existantes()
+telecharger_urls_existantes()
