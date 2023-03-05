@@ -33,9 +33,6 @@ def tester_urls_existantes():
     with open("url.txt", "w") as f:
         for url in valid_urls:
             f.write(url + "\n")
-
-if __name__ == '__main__':
-    tester_urls_existantes()
   
 def dl():
     # Créer le dossier de téléchargement s'il n'existe pas déjà
@@ -63,3 +60,4 @@ def dl():
     tqdm.write(f"Tous les fichiers ont été téléchargés avec succès dans le dossier dl.")
 tester_urls_existantes()
 dl()
+exit()
