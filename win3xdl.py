@@ -2,29 +2,32 @@ import requests
 import os
 from tqdm import tqdm
 
-def tester_urls_existantes():
-    # URL de base avec l'ID comme paramètre
-    base_url = "http://www.win3x.org/win3board/ext/win3x/download.php?id="
-
-    # Liste pour stocker les URLs existantes
-    urls_existantes = []
-
-    # Tester l'existence des pages pour les ID de 1 à 10000
+def verifier_urls():
+    # Générer les URLs à vérifier pour les IDs de 1 à 10000
+    urls = []
     for i in range(1, 10001):
-        url = base_url + str(i)
-        headers = {'Referer': 'http://www.win3x.org', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0'}
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            urls_existantes.append(url)
+        url = f"http://www.win3x.org/win3board/ext/win3x/download.php?id={i}"
+        urls.append(url)
 
-    # Écrire les URLs existantes dans un fichier
+    # Vérifier l'existence de chaque URL avec une barre de progression
+    urls_existantes = []
+    headers = {'Referer': 'http://www.win3x.org', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0'}
+    with tqdm(total=len(urls), desc='Vérification en cours', unit='URL') as pbar:
+        for url in urls:
+            response = requests.head(url, headers=headers)
+
+            if response.status_code == 200:
+                urls_existantes.append(url)
+
+            pbar.update(1)
+
+    # Enregistrer les URLs existantes dans un fichier urls_existantes.txt
     with open('urls_existantes.txt', 'w') as f:
-        for url in urls_existantes:
-            f.write(url + '\n')
+        f.write('\n'.join(urls_existantes))
 
-    print(f"{len(urls_existantes)} URLs existantes ont été écrites dans urls_existantes.txt.")
+    tqdm.write(f"{len(urls_existantes)} URLs existantes ont été enregistrées dans le fichier urls_existantes.txt.")
     
-def telecharger_urls_existantes():
+def dl():
     # Créer le dossier de téléchargement s'il n'existe pas déjà
     if not os.path.exists('dl'):
         os.mkdir('dl')
@@ -48,5 +51,5 @@ def telecharger_urls_existantes():
             tqdm.write(f"{filename} a été téléchargé avec succès dans le dossier dl.")
 
     tqdm.write(f"Tous les fichiers ont été téléchargés avec succès dans le dossier dl.")
-tester_urls_existantes()
-telecharger_urls_existantes()
+verifier_urls()
+dl()
