@@ -50,7 +50,8 @@ def dl():
         response = requests.get(url, headers=headers, stream=True)
 
         if response.status_code == 200:
-            with open(os.path.join('dl', filename), 'wb') as f:
+            filename = response.headers.get('Content-Disposition', '').split('filename=')[-1].strip('\"')
+            with open(os.path.join("dl", filename), "wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         f.write(chunk)
